@@ -1,4 +1,4 @@
-package bibliotecaFacil.servlets;
+package servlet;
 
 import bibliotecaFacil.dao.UsuarioDAO;
 import bibliotecaFacil.modelo.Aluno;
