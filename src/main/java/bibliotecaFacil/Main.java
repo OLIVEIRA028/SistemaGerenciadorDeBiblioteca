@@ -1,5 +1,6 @@
 package bibliotecaFacil;
 
+import dao.EmprestimoDAO;
 import dao.UsuarioDAO;
 import modelo.Aluno;
 import modelo.Professor;
@@ -8,13 +9,17 @@ import modelo.Usuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @SpringBootApplication
 public class Main {
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -41,11 +46,14 @@ public class Main {
     }
 
     @GetMapping("/registrarEmprestimoDevolucao")
-    public String registrarEmprestimoDevolucao() {
+    public String registrarEmprestimoDevolucao(Model model) {
+        // Carregar a lista de usuários cadastrados para popular o select
+        List<Usuario> usuarios = usuarioDAO.listar();
+        model.addAttribute("usuarios", usuarios);
         return "registrarEmprestimoDevolucao";
     }
 
-    // Método para tratar o POST do formulário de cadastro de usuário
+    // POST para cadastro de usuário
     @PostMapping("/usuario")
     public String cadastrarUsuario(
             @RequestParam String nome,
@@ -63,7 +71,26 @@ public class Main {
 
         usuarioDAO.inserir(usuario);
 
-        // Redireciona para a página inicial após cadastrar
         return "redirect:/";
+    }
+
+    // POST para registrar empréstimo ou devolução
+    @PostMapping("/emprestimoDevolucao")
+    public String registrarEmprestimoDevolucao(
+            @RequestParam String acao,
+            @RequestParam(required = false) Integer idUsuario,
+            @RequestParam(required = false) Integer idLivro,
+            @RequestParam(required = false) Integer idEmprestimo
+    ) {
+        if ("emprestimo".equalsIgnoreCase(acao)) {
+            if (idUsuario != null && idLivro != null) {
+                emprestimoDAO.registrarEmprestimo(idUsuario, idLivro);
+            }
+        } else if ("devolucao".equalsIgnoreCase(acao)) {
+            if (idEmprestimo != null && idLivro != null) {
+                emprestimoDAO.registrarDevolucao(idEmprestimo, idLivro);
+            }
+        }
+        return "redirect:/registrarEmprestimoDevolucao";
     }
 }

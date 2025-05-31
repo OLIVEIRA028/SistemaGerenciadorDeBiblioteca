@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registrar Empréstimo e Devolução</title>
 </head>
 <body>
 <h2>Registrar Empréstimo</h2>
-<form method="post" action="emprestimoDevolucao">
+<form method="post" action="/emprestimoDevolucao">
     <input type="hidden" name="acao" value="emprestimo">
     
     <label>ID do Usuário:</label><br>
-    <input type="number" name="idUsuario" required><br>
+    <select name="idUsuario" required>
+        <option value="" disabled selected>Selecione o usuário</option>
+        <option th:each="usuario : ${usuarios}" 
+                th:value="${usuario.id}" 
+                th:text="${usuario.nome} + ' (' + usuario.tipo + ')'">
+        </option>
+    </select><br>
 
     <label>ID do Livro:</label><br>
     <input type="number" name="idLivro" required><br><br>
@@ -21,7 +27,7 @@
 <hr>
 
 <h2>Registrar Devolução</h2>
-<form method="post" action="emprestimoDevolucao">
+<form method="post" action="/emprestimoDevolucao">
     <input type="hidden" name="acao" value="devolucao">
     
     <label>ID do Empréstimo:</label><br>
