@@ -37,4 +37,26 @@ public class Main {
     public String registrarEmprestimoDevolucao() {
         return "registrarEmprestimoDevolucao";
     }
+
+    @PostMapping("/usuario")
+    public String cadastrarUsuario(
+            @RequestParam String nome,
+            @RequestParam String matricula,
+            @RequestParam String cpf,
+            @RequestParam String email,
+            @RequestParam String tipo
+    ) {
+        Usuario usuario;
+        if ("Aluno".equalsIgnoreCase(tipo)) {
+            usuario = new Aluno(0, nome, matricula, cpf, email);
+        } else {
+            usuario = new Professor(0, nome, matricula, cpf, email);
+        }
+
+        usuarioDAO.inserir(usuario);
+
+        return "redirect:/";
+    }
 }
+}
+
