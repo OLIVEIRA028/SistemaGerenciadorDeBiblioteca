@@ -1,12 +1,12 @@
 package modelo;
 
 public class Professor extends Usuario {
-    public Professor(int id, String nome, String matricula, String cpf, String email) {
-        super(id, nome, matricula, cpf, email);
+    public Professor(int matricula, String nome, String cpf, String email) {
+        super(matricula, nome, cpf, email);
     }
 
     @Override
     public String getTipo() {
-        return "Professor";
+        return "PROFESSOR";
     }
 }

@@ -1,26 +1,16 @@
-package dao;
-
-import modelo.Aluno;
-import modelo.Professor;
-import modelo.Usuario;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class UsuarioDAO {
 
     public void inserir(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, matricula, cpf, email, tipo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, matricula, cpf, email, usuario) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = Conexao.getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getMatricula());
+            stmt.setInt(2, usuario.getMatricula());
             stmt.setString(3, usuario.getCpf());
             stmt.setString(4, usuario.getEmail());
-            stmt.setString(5, usuario.getTipo());
+            stmt.setString(5, usuario.getTipo().toUpperCase());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -38,19 +28,19 @@ public class UsuarioDAO {
 
             while (rs.next()) {
                 Usuario usuario;
-                if (rs.getString("tipo").equalsIgnoreCase("Aluno")) {
+                String tipo = rs.getString("usuario");
+
+                if ("ALUNO".equalsIgnoreCase(tipo)) {
                     usuario = new Aluno(
-                            rs.getInt("id"),
+                            rs.getInt("matricula"),
                             rs.getString("nome"),
-                            rs.getString("matricula"),
                             rs.getString("cpf"),
                             rs.getString("email")
                     );
                 } else {
                     usuario = new Professor(
-                            rs.getInt("id"),
+                            rs.getInt("matricula"),
                             rs.getString("nome"),
-                            rs.getString("matricula"),
                             rs.getString("cpf"),
                             rs.getString("email")
                     );

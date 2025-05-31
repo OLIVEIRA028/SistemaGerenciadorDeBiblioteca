@@ -1,16 +1,14 @@
 package modelo;
 
 public abstract class Usuario {
-    protected int id;
     protected String nome;
-    protected String matricula;
+    protected int matricula;
     protected String cpf;
     protected String email;
 
     public Usuario() {}
 
-    public Usuario(int id, String nome, String matricula, String cpf, String email) {
-        this.id = id;
+    public Usuario(int matricula, String nome, String cpf, String email) {
         this.nome = nome;
         this.matricula = matricula;
         this.cpf = cpf;
@@ -18,15 +16,6 @@ public abstract class Usuario {
     }
 
     public abstract String getTipo();
-
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -36,11 +25,11 @@ public abstract class Usuario {
         this.nome = nome;
     }
 
-    public String getMatricula() {
+    public int getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(String matricula) {
+    public void setMatricula(int matricula) {
         this.matricula = matricula;
     }
 
