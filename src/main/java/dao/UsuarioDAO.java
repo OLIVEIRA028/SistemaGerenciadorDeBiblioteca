@@ -1,4 +1,4 @@
-package dao;
+package bibliotecaFacil.dao;
 
 import bibliotecaFacil.modelo.Aluno;
 import bibliotecaFacil.modelo.Professor;

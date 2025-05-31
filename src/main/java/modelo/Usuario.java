@@ -1,4 +1,4 @@
-package modelo;
+package bibliotecaFacil.modelo;
 
 public abstract class Usuario {
     protected String nome;
