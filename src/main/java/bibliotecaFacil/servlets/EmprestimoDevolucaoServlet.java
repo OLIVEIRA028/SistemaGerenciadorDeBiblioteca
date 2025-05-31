@@ -1,5 +1,6 @@
 package com.biblioteca.servlet;
 
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;
