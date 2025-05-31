@@ -25,6 +25,7 @@ public class UsuarioDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
+            System.err.println("Erro ao inserir usuário: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -56,9 +57,11 @@ public class UsuarioDAO {
                             rs.getString("email")
                     );
                 }
+
                 lista.add(usuario);
             }
         } catch (SQLException e) {
+            System.err.println("Erro ao listar usuários: " + e.getMessage());
             e.printStackTrace();
         }
 

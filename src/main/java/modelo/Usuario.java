@@ -17,35 +17,13 @@ public abstract class Usuario {
 
     public abstract String getTipo();
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public int getMatricula() { return matricula; }
+    public String getCpf() { return cpf; }
+    public String getEmail() { return email; }
 
-    public int getMatricula() {
-        return matricula;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setMatricula(int matricula) {
-        this.matricula = matricula;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setNome(String nome) { this.nome = nome; }
+    public void setMatricula(int matricula) { this.matricula = matricula; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
+    public void setEmail(String email) { this.email = email; }
 }
