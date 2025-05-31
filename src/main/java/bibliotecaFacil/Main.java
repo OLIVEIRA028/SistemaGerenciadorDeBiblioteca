@@ -15,7 +15,7 @@ public class Main {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "index";  // procura src/main/resources/templates/index.html
     }
 
     @GetMapping("/cadastroLivro")
