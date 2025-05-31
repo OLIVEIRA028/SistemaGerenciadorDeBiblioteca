@@ -1,10 +1,10 @@
 package bibliotecaFacil;
 
-import dao.EmprestimoDAO;
-import dao.UsuarioDAO;
-import modelo.Aluno;
-import modelo.Professor;
-import modelo.Usuario;
+import bibliotecaFacil.dao.EmprestimoDAO;
+import bibliotecaFacil.dao.UsuarioDAO;
+import bibliotecaFacil.modelo.Aluno;
+import bibliotecaFacil.modelo.Professor;
+import bibliotecaFacil.modelo.Usuario;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
