@@ -1,0 +1,43 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <servlet>
+        <servlet-name>LivroServlet</servlet-name>
+        <servlet-class>com.biblioteca.servlet.LivroServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LivroServlet</servlet-name>
+        <url-pattern>/livro</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EmprestimoDevolucaoServlet</servlet-name>
+        <servlet-class>com.biblioteca.servlet.EmprestimoDevolucaoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EmprestimoDevolucaoServlet</servlet-name>
+        <url-pattern>/emprestimoDevolucao</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UsuarioServlet</servlet-name>
+        <servlet-class>com.biblioteca.servlet.UsuarioServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsuarioServlet</servlet-name>
+        <url-pattern>/usuario</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LivroServlet</servlet-name>
+        <servlet-class>com.biblioteca.servlet.LivroServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LivroServlet</servlet-name>
+        <url-pattern>/livro</url-pattern>
+    </servlet-mapping>
+
+</web-app>
