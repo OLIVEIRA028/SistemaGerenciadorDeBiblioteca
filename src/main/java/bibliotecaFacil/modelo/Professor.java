@@ -1,4 +1,4 @@
-package modelo;
+package bibliotecaFacil.modelo;
 
 public class Professor extends Usuario {
     public Professor(int matricula, String nome, String cpf, String email) {

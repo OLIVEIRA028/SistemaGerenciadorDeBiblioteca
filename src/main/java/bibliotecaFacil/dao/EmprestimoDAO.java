@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.*;
+import modelo.Emprestimo;
 
 public class EmprestimoDAO {
     public void registrarEmprestimo(int idUsuario, int idLivro) {
