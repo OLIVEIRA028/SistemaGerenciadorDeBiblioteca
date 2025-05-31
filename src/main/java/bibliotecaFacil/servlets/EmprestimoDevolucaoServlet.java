@@ -1,5 +1,7 @@
 package com.biblioteca.servlet;
 
+import dao.Conexao;
+
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.sql.*;
@@ -9,10 +11,6 @@ import javax.servlet.http.*;
 
 @WebServlet("/emprestimoDevolucao")
 public class EmprestimoDevolucaoServlet extends HttpServlet {
-
-    private static final String JDBC_URL = "jdbc:mysql://gx97kbnhgjzh3efb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/h5eklyexw4etb6sg";
-    private static final String JDBC_USER = "wzgu81p8i02bl0fg";
-    private static final String JDBC_PASS = "e8p3bqjlex6zymfs";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String acao = request.getParameter("acao");
@@ -36,7 +34,7 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS)) {
+            try (Connection conn = Conexao.getConexao()) {
 
                 // Verifica se livro está disponível
                 String checkLivro = "SELECT status FROM livros WHERE id = ?";
@@ -87,7 +85,7 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS)) {
+            try (Connection conn = Conexao.getConexao()) {
 
                 // Verifica se empréstimo existe e está ativo
                 String checkEmprestimo = "SELECT id_livro, status FROM emprestimos WHERE id = ?";
