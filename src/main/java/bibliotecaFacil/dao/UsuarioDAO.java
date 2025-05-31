@@ -3,7 +3,7 @@ package bibliotecaFacil.dao;
 import bibliotecaFacil.modelo.Aluno;
 import bibliotecaFacil.modelo.Professor;
 import bibliotecaFacil.modelo.Usuario;
-import bibliotecaFacil.util.Conexao;
+import bibliotecaFacil.dao.Conexao;
 
 import java.sql.*;
 import java.util.ArrayList;
