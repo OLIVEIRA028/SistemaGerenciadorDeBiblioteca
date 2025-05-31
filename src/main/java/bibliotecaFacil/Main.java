@@ -1,13 +1,20 @@
 package bibliotecaFacil;
 
+import dao.UsuarioDAO;
+import modelo.Aluno;
+import modelo.Professor;
+import modelo.Usuario;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-@SpringBootApplication
 @Controller
+@SpringBootApplication
 public class Main {
+
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -38,6 +45,7 @@ public class Main {
         return "registrarEmprestimoDevolucao";
     }
 
+    // Método para tratar o POST do formulário de cadastro de usuário
     @PostMapping("/usuario")
     public String cadastrarUsuario(
             @RequestParam String nome,
@@ -55,8 +63,7 @@ public class Main {
 
         usuarioDAO.inserir(usuario);
 
+        // Redireciona para a página inicial após cadastrar
         return "redirect:/";
     }
 }
-}
-
