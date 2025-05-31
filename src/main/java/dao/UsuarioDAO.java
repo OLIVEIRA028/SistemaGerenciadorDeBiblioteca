@@ -1,3 +1,14 @@
+package bibliotecaFacil.dao;
+
+import bibliotecaFacil.modelo.Aluno;
+import bibliotecaFacil.modelo.Professor;
+import bibliotecaFacil.modelo.Usuario;
+import bibliotecaFacil.util.Conexao;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UsuarioDAO {
 
     public void inserir(Usuario usuario) {

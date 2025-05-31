@@ -32,11 +32,5 @@ public class UsuarioServlet extends HttpServlet {
 
         UsuarioDAO dao = new UsuarioDAO();
         dao.inserir(usuario);
-
-        response.setContentType("text/html");
-        response.getWriter().println("<html><body>");
-        response.getWriter().println("<h2>Usuário cadastrado com sucesso!</h2>");
-        response.getWriter().println("<a href=\"index.html\">Voltar</a>");
-        response.getWriter().println("</body></html>");
     }
 }
