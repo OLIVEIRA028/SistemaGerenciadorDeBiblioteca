@@ -8,6 +8,7 @@
 <h2>Registrar Empréstimo</h2>
 <form method="post" action="emprestimoDevolucao">
     <input type="hidden" name="acao" value="emprestimo">
+    
     <label>ID do Usuário:</label><br>
     <input type="number" name="idUsuario" required><br>
 
@@ -22,8 +23,12 @@
 <h2>Registrar Devolução</h2>
 <form method="post" action="emprestimoDevolucao">
     <input type="hidden" name="acao" value="devolucao">
+    
     <label>ID do Empréstimo:</label><br>
-    <input type="number" name="idEmprestimo" required><br><br>
+    <input type="number" name="idEmprestimo" required><br>
+
+    <label>ID do Livro:</label><br>
+    <input type="number" name="idLivro" required><br><br>
 
     <button type="submit">Registrar Devolução</button>
 </form>

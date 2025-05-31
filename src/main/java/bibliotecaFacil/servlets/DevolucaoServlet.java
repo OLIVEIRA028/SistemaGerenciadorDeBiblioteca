@@ -11,9 +11,10 @@ public class DevolucaoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         int idEmprestimo = Integer.parseInt(request.getParameter("idEmprestimo"));
+        int idLivro = Integer.parseInt(request.getParameter("idLivro")); // recupera o ID do livro também
 
         EmprestimoDAO dao = new EmprestimoDAO();
-        dao.registrarDevolucao(idEmprestimo);
+        dao.registrarDevolucao(idEmprestimo, idLivro); // agora com os dois argumentos
 
         response.sendRedirect("sucesso.html");
     }
