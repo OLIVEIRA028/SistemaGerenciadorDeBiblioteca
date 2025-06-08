@@ -3,10 +3,7 @@ package bibliotecaFacil;
 import bibliotecaFacil.dao.EmprestimoDAO;
 import bibliotecaFacil.dao.LivroDAO;
 import bibliotecaFacil.dao.UsuarioDAO;
-import bibliotecaFacil.modelo.Aluno;
-import bibliotecaFacil.modelo.Livro;
-import bibliotecaFacil.modelo.Professor;
-import bibliotecaFacil.modelo.Usuario;
+import bibliotecaFacil.modelo.*;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,13 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @SpringBootApplication
 public class Main {
 
-    // Instância manual dos DAOs
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
     private final LivroDAO livroDAO = new LivroDAO();
@@ -58,6 +55,25 @@ public class Main {
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("livros", livros);
         return "registrarEmprestimoDevolucao";
+    }
+
+    // ✅ Novo método: cadastrar livro
+    @PostMapping("/livro")
+    public String cadastrarLivro(
+            @RequestParam String isbn,
+            @RequestParam String titulo,
+            @RequestParam String autor
+    ) {
+        Livro livro = new Livro(
+                isbn,
+                titulo,
+                autor,
+                new Date(),              // valor genérico para data de publicação
+                "Desconhecida",          // valor padrão para editora
+                true                     // o livro começa como disponível
+        );
+        livroDAO.inserir(livro);
+        return "redirect:/listarLivros";
     }
 
     @PostMapping("/usuario")
