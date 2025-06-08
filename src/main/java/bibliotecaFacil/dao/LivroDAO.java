@@ -1,7 +1,7 @@
 package bibliotecaFacil.dao;
 
-import modelo.Livro;
-import dao.Conexao;
+import bibliotecaFacil.modelo.Livro;
+import bibliotecaFacil.dao.Conexao;
 
 import java.sql.*;
 import java.util.ArrayList;
