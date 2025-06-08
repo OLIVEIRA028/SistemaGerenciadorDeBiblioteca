@@ -1,6 +1,6 @@
-package com.biblioteca.servlet;
+package bibliotecaFacil.servlet;
 
-import dao.Conexao;
+import bibliotecaFacil.dao.Conexao;
 
 import java.io.PrintWriter;
 import java.io.IOException;

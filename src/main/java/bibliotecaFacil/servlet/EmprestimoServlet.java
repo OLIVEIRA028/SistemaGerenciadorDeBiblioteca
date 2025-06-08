@@ -1,6 +1,6 @@
-package servlet;
+package bibliotecaFacil.servlet;
 
-import dao.EmprestimoDAO;
+import bibliotecaFacil.dao.EmprestimoDAO;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
