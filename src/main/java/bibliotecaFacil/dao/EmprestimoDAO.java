@@ -1,6 +1,6 @@
 package bibliotecaFacil.dao;
 
-import dao.Conexao;
+import bibliotecaFacil.dao.Conexao;
 import java.sql.*;
 
 public class EmprestimoDAO {
