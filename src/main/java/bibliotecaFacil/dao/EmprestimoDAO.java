@@ -1,7 +1,8 @@
-package dao;
+package bibliotecaFacil.dao;
 
 import java.sql.*;
 import modelo.Emprestimo;
+import bibliotecaFacil.dao.Conexao;
 
 public class EmprestimoDAO {
     public void registrarEmprestimo(int idUsuario, int idLivro) {
