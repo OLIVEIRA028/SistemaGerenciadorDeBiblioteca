@@ -95,14 +95,21 @@ public class Main {
             @RequestParam(required = false) String idLivro,
             @RequestParam(required = false) Integer idEmprestimo
     ) {
-        if ("emprestimo".equalsIgnoreCase(acao)) {
-            if (idUsuario != null && idLivro != null && !idLivro.isEmpty()) {
-                emprestimoDAO.registrarEmprestimo(idUsuario, idLivro);
+        try {
+            if ("emprestimo".equalsIgnoreCase(acao)) {
+                if (idUsuario != null && idLivro != null && !idLivro.isEmpty()) {
+                    int idLivroInt = Integer.parseInt(idLivro);
+                    emprestimoDAO.registrarEmprestimo(idUsuario, idLivroInt);
+                }
+            } else if ("devolucao".equalsIgnoreCase(acao)) {
+                if (idEmprestimo != null && idLivro != null && !idLivro.isEmpty()) {
+                    int idLivroInt = Integer.parseInt(idLivro);
+                    emprestimoDAO.registrarDevolucao(idEmprestimo, idLivroInt);
+                }
             }
-        } else if ("devolucao".equalsIgnoreCase(acao)) {
-            if (idEmprestimo != null && idLivro != null && !idLivro.isEmpty()) {
-                emprestimoDAO.registrarDevolucao(idEmprestimo, idLivro);
-            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            // Aqui você pode adicionar lógica para feedback ao usuário se desejar
         }
         return "redirect:/registrarEmprestimoDevolucao";
     }
