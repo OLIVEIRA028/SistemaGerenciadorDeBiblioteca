@@ -8,7 +8,6 @@ import bibliotecaFacil.modelo.Livro;
 import bibliotecaFacil.modelo.Professor;
 import bibliotecaFacil.modelo.Usuario;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -21,14 +20,10 @@ import java.util.List;
 @SpringBootApplication
 public class Main {
 
-    @Autowired
-    private UsuarioDAO usuarioDAO;
-
-    @Autowired
-    private EmprestimoDAO emprestimoDAO;
-
-    @Autowired
-    private LivroDAO livroDAO;
+    // Instância manual dos DAOs
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    private final LivroDAO livroDAO = new LivroDAO();
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -109,7 +104,6 @@ public class Main {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            // Aqui você pode adicionar lógica para feedback ao usuário se desejar
         }
         return "redirect:/registrarEmprestimoDevolucao";
     }
