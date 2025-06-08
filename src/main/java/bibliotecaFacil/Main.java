@@ -83,7 +83,6 @@ public class Main {
             }
             usuarioDAO.inserir(usuario);
         } catch (NumberFormatException e) {
-            // Pode adicionar mensagem de erro na model para exibir na view (não implementado aqui)
             e.printStackTrace();
         }
         return "redirect:/";
