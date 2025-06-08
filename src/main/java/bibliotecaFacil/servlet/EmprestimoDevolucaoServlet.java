@@ -35,14 +35,12 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = Conexao.getConexao()) {
-
-                // Verifica se livro está disponível
-                String checkLivro = "SELECT status FROM livros WHERE id = ?";
+                String checkLivro = "SELECT disponivel FROM livros WHERE id = ?";
                 try (PreparedStatement psCheck = conn.prepareStatement(checkLivro)) {
                     psCheck.setInt(1, idLivro);
                     ResultSet rs = psCheck.executeQuery();
                     if (rs.next()) {
-                        boolean disponivel = rs.getBoolean("status");
+                        boolean disponivel = rs.getBoolean("disponivel");
                         if (!disponivel) {
                             out.println("<p>Livro não está disponível para empréstimo.</p>");
                             return;
@@ -63,7 +61,7 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
 
                     if (rows > 0) {
                         // Atualiza status do livro para indisponível (false)
-                        String updateLivro = "UPDATE livros SET status = false WHERE id = ?";
+                        String updateLivro = "UPDATE livros SET disponivel = true WHERE id = ?";
                         try (PreparedStatement psUpdate = conn.prepareStatement(updateLivro)) {
                             psUpdate.setInt(1, idLivro);
                             psUpdate.executeUpdate();
@@ -109,7 +107,7 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
                         }
 
                         // Atualiza status do livro para disponível
-                        String updateLivro = "UPDATE livros SET status = true WHERE id = ?";
+                        String updateLivro = "UPDATE livros SET disponivel = true WHERE id = ?";
                         try (PreparedStatement psUpdateLivro = conn.prepareStatement(updateLivro)) {
                             psUpdateLivro.setInt(1, idLivro);
                             psUpdateLivro.executeUpdate();
