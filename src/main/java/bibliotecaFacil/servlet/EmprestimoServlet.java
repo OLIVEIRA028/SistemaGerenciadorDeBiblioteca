@@ -11,7 +11,7 @@ public class EmprestimoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-        int idLivro = Integer.parseInt(request.getParameter("idLivro"));
+        String isbn = request.getParameter("isbn");
 
         EmprestimoDAO dao = new EmprestimoDAO();
         dao.registrarEmprestimo(idUsuario, idLivro);

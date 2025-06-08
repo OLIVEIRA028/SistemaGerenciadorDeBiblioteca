@@ -30,12 +30,12 @@ public class EmprestimoDevolucaoServlet extends HttpServlet {
 
     private void registrarEmprestimo(HttpServletRequest request, PrintWriter out) {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-        int idLivro = Integer.parseInt(request.getParameter("idLivro"));
+        String isbn = request.getParameter("isbn");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = Conexao.getConexao()) {
-                String checkLivro = "SELECT disponivel FROM livros WHERE id = ?";
+                String checkLivro = "SELECT disponivel FROM livros WHERE isbn = ?";
                 try (PreparedStatement psCheck = conn.prepareStatement(checkLivro)) {
                     psCheck.setInt(1, idLivro);
                     ResultSet rs = psCheck.executeQuery();
