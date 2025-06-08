@@ -1,4 +1,4 @@
-package dao;
+package bibliotecaFacil.dao;
 
 import modelo.Livro;
 import util.Conexao;
@@ -16,7 +16,15 @@ public class LivroDAO {
             stmt.setString(1, livro.getIsbn());
             stmt.setString(2, livro.getTitulo());
             stmt.setString(3, livro.getAutor());
-            stmt.setDate(4, Date.valueOf(livro.getPublicacao())); // LocalDate -> java.sql.Date
+
+            // Corrigido: converter java.util.Date para java.sql.Date
+            java.util.Date dataPublicacao = livro.getPublicacao();
+            if (dataPublicacao != null) {
+                stmt.setDate(4, new java.sql.Date(dataPublicacao.getTime()));
+            } else {
+                stmt.setDate(4, null);
+            }
+
             stmt.setString(5, livro.getEditora());
             stmt.setBoolean(6, livro.isDisponivel());
             stmt.executeUpdate();
@@ -33,11 +41,14 @@ public class LivroDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                java.sql.Date sqlDate = rs.getDate("publicacao");
+                java.util.Date dataPublicacao = (sqlDate != null) ? new java.util.Date(sqlDate.getTime()) : null;
+
                 Livro livro = new Livro(
                         rs.getString("isbn"),
                         rs.getString("titulo"),
                         rs.getString("autor"),
-                        rs.getDate("publicacao").toLocalDate(),
+                        dataPublicacao,
                         rs.getString("editora"),
                         rs.getBoolean("disponivel")
                 );
@@ -69,11 +80,14 @@ public class LivroDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                java.sql.Date sqlDate = rs.getDate("publicacao");
+                java.util.Date dataPublicacao = (sqlDate != null) ? new java.util.Date(sqlDate.getTime()) : null;
+
                 return new Livro(
                         rs.getString("isbn"),
                         rs.getString("titulo"),
                         rs.getString("autor"),
-                        rs.getDate("publicacao").toLocalDate(),
+                        dataPublicacao,
                         rs.getString("editora"),
                         rs.getBoolean("disponivel")
                 );

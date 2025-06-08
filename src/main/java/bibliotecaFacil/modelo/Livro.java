@@ -1,4 +1,4 @@
-package modelo;
+package bibliotecaFacil.modelo;
 
 import java.util.Date;
 
