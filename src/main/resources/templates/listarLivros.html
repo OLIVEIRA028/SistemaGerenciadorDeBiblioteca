@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Listagem de Livros</title>
@@ -7,7 +7,7 @@
 <body>
 <h2>Livros Cadastrados</h2>
 
-<form method="get" action="livro">
+<form method="get" action="/listarLivros">
     <button type="submit">Atualizar Lista</button>
 </form>
 
@@ -17,12 +17,16 @@
         <th>ISBN</th>
         <th>Título</th>
         <th>Autor</th>
-        <th>Editora</th>
         <th>Status</th>
     </tr>
     </thead>
     <tbody>
-    <!-- Os dados da tabela serão preenchidos pelo servlet LivroServlet -->
+    <tr th:each="livro : ${livros}">
+        <td th:text="${livro.isbn}"></td>
+        <td th:text="${livro.titulo}"></td>
+        <td th:text="${livro.autor}"></td>
+        <td th:text="${livro.disponivel ? 'Disponível' : 'Indisponível'}"></td>
+    </tr>
     </tbody>
 </table>
 </body>

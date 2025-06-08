@@ -1,44 +1,49 @@
 package bibliotecaFacil.dao;
 
+import util.Conexao;
 import java.sql.*;
-import modelo.Emprestimo;
-import bibliotecaFacil.dao.Conexao;
 
 public class EmprestimoDAO {
-    public void registrarEmprestimo(int idUsuario, int idLivro) {
-        try (Connection conn = Conexao.getConexao()) {
-            String sql1 = "INSERT INTO emprestimos (id_usuario, data, status) VALUES (?, NOW(), 'ativo')";
-            PreparedStatement stmt1 = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
-            stmt1.setInt(1, idUsuario);
-            stmt1.executeUpdate();
 
-            ResultSet generatedKeys = stmt1.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int idEmprestimo = generatedKeys.getInt(1);
+    public void registrarEmprestimo(int matricula, String isbn) {
+        String sql = "INSERT INTO emprestimos (matricula, isbn, data_emprestimo, status) VALUES (?, ?, CURDATE(), 'ATIVO')";
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                String sql2 = "INSERT INTO emprestimo_livros (id_emprestimo, id_livro) VALUES (?, ?)";
-                PreparedStatement stmt2 = conn.prepareStatement(sql2);
-                stmt2.setInt(1, idEmprestimo);
-                stmt2.setInt(2, idLivro);
-                stmt2.executeUpdate();
+            stmt.setInt(1, matricula);
+            stmt.setString(2, isbn);
+            stmt.executeUpdate();
 
-                new LivroDAO().atualizarStatus(idLivro, false);
-            }
+            // Atualiza o status do livro para indisponível
+            atualizarDisponibilidadeLivro(conn, isbn, false);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void registrarDevolucao(int idEmprestimo, int idLivro) {
-        try (Connection conn = Conexao.getConexao()) {
-            String sql1 = "UPDATE emprestimos SET status = 'finalizado' WHERE id = ?";
-            PreparedStatement stmt1 = conn.prepareStatement(sql1);
-            stmt1.setInt(1, idEmprestimo);
-            stmt1.executeUpdate();
+    public void registrarDevolucao(int idEmprestimo, String isbn) {
+        String sql = "UPDATE emprestimos SET status = 'DEVOLVIDO', data_devolucao = CURDATE() WHERE id_emprestimo = ?";
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            new LivroDAO().atualizarStatus(idLivro, true);
+            stmt.setInt(1, idEmprestimo);
+            stmt.executeUpdate();
+
+            // Atualiza o status do livro para disponível
+            atualizarDisponibilidadeLivro(conn, isbn, true);
+
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void atualizarDisponibilidadeLivro(Connection conn, String isbn, boolean disponivel) throws SQLException {
+        String sql = "UPDATE livros SET disponivel = ? WHERE isbn = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setBoolean(1, disponivel);
+            stmt.setString(2, isbn);
+            stmt.executeUpdate();
         }
     }
 }

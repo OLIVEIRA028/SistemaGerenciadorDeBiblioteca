@@ -1,11 +1,14 @@
 package bibliotecaFacil;
 
 import bibliotecaFacil.dao.EmprestimoDAO;
+import bibliotecaFacil.dao.LivroDAO;
 import bibliotecaFacil.dao.UsuarioDAO;
 import bibliotecaFacil.modelo.Aluno;
+import bibliotecaFacil.modelo.Livro;
 import bibliotecaFacil.modelo.Professor;
 import bibliotecaFacil.modelo.Usuario;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -18,8 +21,14 @@ import java.util.List;
 @SpringBootApplication
 public class Main {
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    private EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    @Autowired
+    private UsuarioDAO usuarioDAO;
+
+    @Autowired
+    private EmprestimoDAO emprestimoDAO;
+
+    @Autowired
+    private LivroDAO livroDAO;
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -27,7 +36,7 @@ public class Main {
 
     @GetMapping("/")
     public String index() {
-        return "index"; 
+        return "index";
     }
 
     @GetMapping("/cadastroLivro")
@@ -41,19 +50,21 @@ public class Main {
     }
 
     @GetMapping("/listarLivros")
-    public String listarLivros() {
+    public String listarLivros(Model model) {
+        List<Livro> livros = livroDAO.listar();
+        model.addAttribute("livros", livros);
         return "listarLivros";
     }
 
     @GetMapping("/registrarEmprestimoDevolucao")
     public String registrarEmprestimoDevolucao(Model model) {
-        // Carregar a lista de usuários cadastrados para popular o select
         List<Usuario> usuarios = usuarioDAO.listar();
+        List<Livro> livros = livroDAO.listar();
         model.addAttribute("usuarios", usuarios);
+        model.addAttribute("livros", livros);
         return "registrarEmprestimoDevolucao";
     }
 
-    // POST para cadastro de usuário
     @PostMapping("/usuario")
     public String cadastrarUsuario(
             @RequestParam String nome,
@@ -62,32 +73,35 @@ public class Main {
             @RequestParam String email,
             @RequestParam String tipo
     ) {
-        Usuario usuario;
-        if ("Aluno".equalsIgnoreCase(tipo)) {
-            usuario = new Aluno(0, nome, matricula, cpf, email);
-        } else {
-            usuario = new Professor(0, nome, matricula, cpf, email);
+        try {
+            int matriculaInt = Integer.parseInt(matricula);
+            Usuario usuario;
+            if ("Aluno".equalsIgnoreCase(tipo)) {
+                usuario = new Aluno(matriculaInt, nome, cpf, email);
+            } else {
+                usuario = new Professor(matriculaInt, nome, cpf, email);
+            }
+            usuarioDAO.inserir(usuario);
+        } catch (NumberFormatException e) {
+            // Pode adicionar mensagem de erro na model para exibir na view (não implementado aqui)
+            e.printStackTrace();
         }
-
-        usuarioDAO.inserir(usuario);
-
         return "redirect:/";
     }
 
-    // POST para registrar empréstimo ou devolução
     @PostMapping("/emprestimoDevolucao")
     public String registrarEmprestimoDevolucao(
             @RequestParam String acao,
             @RequestParam(required = false) Integer idUsuario,
-            @RequestParam(required = false) Integer idLivro,
+            @RequestParam(required = false) String idLivro,
             @RequestParam(required = false) Integer idEmprestimo
     ) {
         if ("emprestimo".equalsIgnoreCase(acao)) {
-            if (idUsuario != null && idLivro != null) {
+            if (idUsuario != null && idLivro != null && !idLivro.isEmpty()) {
                 emprestimoDAO.registrarEmprestimo(idUsuario, idLivro);
             }
         } else if ("devolucao".equalsIgnoreCase(acao)) {
-            if (idEmprestimo != null && idLivro != null) {
+            if (idEmprestimo != null && idLivro != null && !idLivro.isEmpty()) {
                 emprestimoDAO.registrarDevolucao(idEmprestimo, idLivro);
             }
         }

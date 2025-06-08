@@ -1,7 +1,8 @@
-package bibliotecaFacil.dao;
+package dao;
 
-import bibliotecaFacil.modelo.Livro;
-import bibliotecaFacil.dao.Conexao;
+import modelo.Livro;
+import util.Conexao;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +10,15 @@ import java.util.List;
 public class LivroDAO {
 
     public void inserir(Livro livro) {
-        String sql = "INSERT INTO livros (titulo, autor, isbn, ano, editora, status) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = Conexao.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, livro.getTitulo());
-            stmt.setString(2, livro.getAutor());
-            stmt.setString(3, livro.getIsbn());
-            stmt.setInt(4, livro.getAno());
+        String sql = "INSERT INTO livros (isbn, titulo, autor, publicacao, editora, disponivel) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection con = Conexao.getConexao();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, livro.getIsbn());
+            stmt.setString(2, livro.getTitulo());
+            stmt.setString(3, livro.getAutor());
+            stmt.setDate(4, Date.valueOf(livro.getPublicacao())); // LocalDate -> java.sql.Date
             stmt.setString(5, livro.getEditora());
-            stmt.setString(6, livro.isDisponivel() ? "disponivel" : "emprestado");
-
+            stmt.setBoolean(6, livro.isDisponivel());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,44 +26,61 @@ public class LivroDAO {
     }
 
     public List<Livro> listar() {
-        List<Livro> lista = new ArrayList<>();
+        List<Livro> livros = new ArrayList<>();
         String sql = "SELECT * FROM livros";
-
-        try (Connection conn = Conexao.getConexao();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection con = Conexao.getConexao();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Livro livro = new Livro(
-                        rs.getInt("id"),
+                        rs.getString("isbn"),
                         rs.getString("titulo"),
                         rs.getString("autor"),
-                        rs.getString("isbn"),
-                        rs.getInt("ano"),
+                        rs.getDate("publicacao").toLocalDate(),
                         rs.getString("editora"),
-                        rs.getString("status").equalsIgnoreCase("disponivel")
+                        rs.getBoolean("disponivel")
                 );
-                lista.add(livro);
+                livros.add(livro);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return lista;
+        return livros;
     }
 
-    public void atualizarStatus(int idLivro, boolean disponivel) {
-        String sql = "UPDATE livros SET status = ? WHERE id = ?";
-        try (Connection conn = Conexao.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, disponivel ? "disponivel" : "emprestado");
-            stmt.setInt(2, idLivro);
+    public void atualizarStatus(String isbn, boolean disponivel) {
+        String sql = "UPDATE livros SET disponivel = ? WHERE isbn = ?";
+        try (Connection con = Conexao.getConexao();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setBoolean(1, disponivel);
+            stmt.setString(2, isbn);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Outros métodos: buscarPorId(), deletar(), etc.
+    public Livro buscarPorIsbn(String isbn) {
+        String sql = "SELECT * FROM livros WHERE isbn = ?";
+        try (Connection con = Conexao.getConexao();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Livro(
+                        rs.getString("isbn"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getDate("publicacao").toLocalDate(),
+                        rs.getString("editora"),
+                        rs.getBoolean("disponivel")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

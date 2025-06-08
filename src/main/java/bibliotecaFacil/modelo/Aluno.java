@@ -1,6 +1,7 @@
 package bibliotecaFacil.modelo;
 
 public class Aluno extends Usuario {
+
     public Aluno(int matricula, String nome, String cpf, String email) {
         super(matricula, nome, cpf, email);
     }

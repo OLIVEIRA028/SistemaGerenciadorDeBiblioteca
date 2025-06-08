@@ -1,33 +1,32 @@
-package bibliotecaFacil.modelo;
+package modelo;
+
+import java.util.Date;
 
 public class Livro {
-    private int id;
+    private String isbn;
     private String titulo;
     private String autor;
-    private String isbn;
-    private int ano;
+    private Date publicacao;
     private String editora;
     private boolean disponivel;
 
-    public Livro() {}
-
-    public Livro(int id, String titulo, String autor, String isbn, int ano, String editora, boolean disponivel) {
-        this.id = id;
+    public Livro(String isbn, String titulo, String autor, Date publicacao, String editora, boolean disponivel) {
+        this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
-        this.isbn = isbn;
-        this.ano = ano;
+        this.publicacao = publicacao;
         this.editora = editora;
         this.disponivel = disponivel;
     }
 
     // Getters e Setters
-    public int getId() {
-        return id;
+
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitulo() {
@@ -46,20 +45,12 @@ public class Livro {
         this.autor = autor;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public Date getPublicacao() {
+        return publicacao;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
+    public void setPublicacao(Date publicacao) {
+        this.publicacao = publicacao;
     }
 
     public String getEditora() {

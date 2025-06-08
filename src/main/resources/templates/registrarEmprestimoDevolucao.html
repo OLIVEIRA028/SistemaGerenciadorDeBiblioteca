@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Registrar Empréstimo e Devolução</title>
 </head>
 <body>
 <h2>Registrar Empréstimo</h2>
-<form method="post" action="/emprestimoDevolucao">
-    <input type="hidden" name="acao" value="emprestimo">
-    
-    <label>ID do Usuário:</label><br>
+<form th:action="@{/emprestimoDevolucao}" method="post">
+    <input type="hidden" name="acao" value="emprestimo" />
+
+    <label>Usuário:</label><br>
     <select name="idUsuario" required>
         <option value="" disabled selected>Selecione o usuário</option>
         <option th:each="usuario : ${usuarios}" 
-                th:value="${usuario.id}" 
+                th:value="${usuario.matricula}" 
                 th:text="${usuario.nome} + ' (' + usuario.tipo + ')'">
         </option>
     </select><br>
 
-    <label>ID do Livro:</label><br>
-    <input type="number" name="idLivro" required><br><br>
+    <label>Livro:</label><br>
+    <select name="idLivro" required>
+        <option value="" disabled selected>Selecione o livro</option>
+        <option th:each="livro : ${livros}"
+                th:value="${livro.isbn}"
+                th:text="${livro.titulo} + ' - ' + livro.autor">
+        </option>
+    </select><br><br>
 
     <button type="submit">Registrar Empréstimo</button>
 </form>
 
-<hr>
+<hr />
 
 <h2>Registrar Devolução</h2>
-<form method="post" action="/emprestimoDevolucao">
-    <input type="hidden" name="acao" value="devolucao">
-    
-    <label>ID do Empréstimo:</label><br>
-    <input type="number" name="idEmprestimo" required><br>
+<form th:action="@{/emprestimoDevolucao}" method="post">
+    <input type="hidden" name="acao" value="devolucao" />
 
-    <label>ID do Livro:</label><br>
-    <input type="number" name="idLivro" required><br><br>
+    <label>ID do Empréstimo:</label><br>
+    <input type="number" name="idEmprestimo" required /><br>
+
+    <label>Livro:</label><br>
+    <select name="idLivro" required>
+        <option value="" disabled selected>Selecione o livro</option>
+        <option th:each="livro : ${livros}"
+                th:value="${livro.isbn}"
+                th:text="${livro.titulo} + ' - ' + livro.autor">
+        </option>
+    </select><br><br>
 
     <button type="submit">Registrar Devolução</button>
 </form>
